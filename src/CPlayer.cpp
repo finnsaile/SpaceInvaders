@@ -27,26 +27,65 @@ void CPlayer::playerTick()
         default: x = 0; y = 0; break;
     }
     m_playerRect.move(x, y);
-    m_clock.restart();
-    std::cout << "X: " << m_playerRect.getPosition().x << ", Y: " << m_playerRect.getPosition().y << std::endl;
+    std::cout << 1/m_clock.restart().asSeconds() << std::endl;
 }
 
-void CPlayer::setState(bool& W, bool& A, bool& S, bool& D)
+void CPlayer::setState(bool W, bool A, bool S, bool D)
 {
-    if(W && S)
+    handleVector(W, m_vecY, UP);
+    handleVector(S, m_vecY, DOWN);
+    handleVector(A, m_vecX, LEFT);
+    handleVector(D, m_vecX, RIGHT);
+
+    // if(W && std::find(m_vecY.begin(), m_vecY.end(), UP) == m_vecY.end()) 
+    //     m_vecY.push_back(UP);
+    // else if(!W && std::find(m_vecY.begin(), m_vecY.end(), UP) != m_vecY.end())
+    //     m_vecY.erase(std::find(m_vecY.begin(), m_vecY.end(), UP));
+
+    // if(S && std::find(m_vecY.begin(), m_vecY.end(), DOWN) == m_vecY.end()) 
+    //     m_vecY.push_back(DOWN);
+    // else if(!S && std::find(m_vecY.begin(), m_vecY.end(), DOWN) != m_vecY.end())
+    //     m_vecY.erase(std::find(m_vecY.begin(), m_vecY.end(), DOWN));
+    
+    // if(A && std::find(m_vecX.begin(), m_vecX.end(), LEFT) == m_vecX.end()) 
+    //     m_vecX.push_back(LEFT);
+    // else if(!A && std::find(m_vecX.begin(), m_vecX.end(), LEFT) != m_vecX.end())
+    //     m_vecX.erase(std::find(m_vecX.begin(), m_vecX.end(), LEFT));
+
+    // if(D && std::find(m_vecX.begin(), m_vecX.end(), RIGHT) == m_vecX.end()) 
+    //     m_vecX.push_back(RIGHT);
+    // else if(!D && std::find(m_vecX.begin(), m_vecX.end(), RIGHT) != m_vecX.end())
+    //     m_vecX.erase(std::find(m_vecX.begin(), m_vecX.end(), RIGHT));
+   
+    if(!m_vecY.empty())
     {
-        if(m_state == UP || m_state == UPRIGHT || m_state == UPLEFT)
-            W = false;
-        else 
-            S = false;
+        if(*(m_vecY.end() - 1) == UP) {W = true; S = false;}
+        else if(*(m_vecY.end() - 1) == DOWN) {W = false; S = true;} 
     }
-    if(A && D)
-    {
-        if(m_state == LEFT || m_state == UPLEFT || m_state == DOWNLEFT)
-            A = false;
-        else 
-            D = false;
+    if(m_vecY.size() == static_cast<size_t>(2))
+        std::cout << "TRUE" << std::endl;
+    if(!m_vecX.empty())
+    {    
+        if(*(m_vecX.end() - 1) == LEFT) {A = true; D = false;}
+        else if(*(m_vecX.end() - 1) == RIGHT) {A = false; D = true;} 
     }
+    if(m_vecX.size() == static_cast<size_t>(2))
+        std::cout << "TRUE" << std::endl;
+
+    // if(W && S)
+    // {
+    //     if(m_state == UP || m_state == UPRIGHT || m_state == UPLEFT)
+    //         W = false;
+    //     else 
+    //         S = false;
+    // }
+    // if(A && D)
+    // {
+    //     if(m_state == LEFT || m_state == UPLEFT || m_state == DOWNLEFT)
+    //         A = false;
+    //     else 
+    //         D = false;
+    // }
 
 
     if(W && !A && !S && !D) m_state = UP;
@@ -59,6 +98,15 @@ void CPlayer::setState(bool& W, bool& A, bool& S, bool& D)
     else if(!W && !A && S && D) m_state = DOWNRIGHT;
     else m_state = REST;
 }
+
+void CPlayer::handleVector(bool& boolIn, std::vector<State>& vecIn, State stateIn)
+{
+    if(boolIn && std::find(vecIn.begin(), vecIn.end(), stateIn) == vecIn.end()) 
+        vecIn.push_back(stateIn);
+    else if(!boolIn && std::find(vecIn.begin(), vecIn.end(), stateIn) != vecIn.end())
+        vecIn.erase(std::find(vecIn.begin(), vecIn.end(), stateIn));
+}
+
 
 void CPlayer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
