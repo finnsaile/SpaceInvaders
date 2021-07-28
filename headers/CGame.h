@@ -11,6 +11,7 @@ class CGame
     private:
         sf::ContextSettings m_settings;
         sf::Event m_event;
+        sf::Vector2f m_scale;
         std::unique_ptr<sf::RenderWindow> m_window;
-        CPlayer m_player;
+        std::unique_ptr<CPlayer> m_player;
 };

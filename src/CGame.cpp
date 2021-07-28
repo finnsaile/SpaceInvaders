@@ -3,12 +3,22 @@
 
 CGame::CGame()
 {
+    unsigned int height = sf::VideoMode::getDesktopMode().height / 1.5;
+    unsigned int width = sf::VideoMode::getDesktopMode().width / 4;
+    float uniform_scale = (height / static_cast<float>(960)) < (width / static_cast<float>(640)) ? 
+                            (height / static_cast<float>(960)) : (width / static_cast<float>(640));
+    m_scale = sf::Vector2f(uniform_scale, uniform_scale);
+
+    std::cout << m_scale.x << std::endl;
+    std::cout << m_scale.y << std::endl;
     m_settings.antialiasingLevel = 8;
-    m_window = std::make_unique<sf::RenderWindow>(sf::VideoMode(600, 800),
+    m_window = std::make_unique<sf::RenderWindow>(sf::VideoMode(width, height),
                                                 "Space Invaders", 
                                                 sf::Style::Titlebar | sf::Style::Close, 
                                                 m_settings);
+    m_player = std::make_unique<CPlayer>(m_scale);
     m_window->setFramerateLimit(150);
+    m_window->setVerticalSyncEnabled(true);
     m_window->setKeyRepeatEnabled(false);                                            
 }
 
@@ -81,10 +91,10 @@ void CGame::runGame()
                     break;
             }
         }
-        m_player.setState(W, A, S, D);
-        m_player.playerTick();
+        m_player->setState(W, A, S, D);
+        m_player->playerTick();
         m_window->clear(sf::Color::Transparent);
-        m_window->draw(m_player);
+        m_window->draw(*m_player);
         m_window->display();
     }
 }
