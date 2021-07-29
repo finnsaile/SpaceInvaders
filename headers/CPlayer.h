@@ -10,13 +10,17 @@ class CPlayer : public sf::Drawable, public sf::Transformable
 {
     public:
         CPlayer(sf::Vector2f& scaleVec);
+        ~CPlayer();
         void playerTick();
         void setState(bool W, bool A, bool S, bool D);
 
     private:
-        double m_accumulator;
-        State m_state;
-        sf::RectangleShape m_playerRect;
+        long long bigcounter = 0;
+        long long bigc = 0;
+        double m_accumulator = 0;
+        State m_state = REST;
+        sf::Sprite m_player_sprite;
+        sf::Texture m_player_texture;
         sf::Clock m_clock;
         sf::Vector2f& m_scale;
         sf::Vector2f m_current_pos;
@@ -24,7 +28,8 @@ class CPlayer : public sf::Drawable, public sf::Transformable
         std::vector<State> m_vecX;
         std::vector<State> m_vecY;
 
-        sf::Vector2f calcMovement(sf::Vector2f pos, float delta_time);   
+        void initPlayerModel();
+        sf::Vector2f calcMovement(float delta_time);   
         void handleVector(bool& boolIn, std::vector<State>& vecIn, State stateIn);
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

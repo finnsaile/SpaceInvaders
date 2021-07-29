@@ -2,40 +2,34 @@
 #include <iostream>
 
 CPlayer::CPlayer(sf::Vector2f& scaleVec) : 
-m_state(REST),
-m_scale(scaleVec),
-m_accumulator(0)
+m_scale(scaleVec)
 {
-    m_playerRect.setSize(sf::Vector2f(49,49));
-    m_playerRect.setFillColor(sf::Color::Green);
-    m_playerRect.setOrigin(sf::Vector2f(25,25));
-    m_playerRect.setPosition(300, 400);
-    m_playerRect.setScale(m_scale);
-    m_current_pos = m_playerRect.getPosition();    //m_vecX.reserve(2);
-    //m_vecY.reserve(2);
+    initPlayerModel();
 }
 
+
+CPlayer::~CPlayer()
+{
+    std::cout << "[" << bigcounter/static_cast<double>(bigc) << "]" << std::endl;
+}
 void CPlayer::playerTick()
 {
     float frame_time = m_clock.restart().asSeconds(), delta_time = 0.001;
-    if(frame_time > 0.25)
-        frame_time = 0.25;
-
+    int counter = 0;
     m_accumulator += frame_time;
 
     while(m_accumulator >= delta_time)
-    {
-        m_previous_pos = m_current_pos;
-        m_current_pos = calcMovement(m_current_pos, delta_time);    
+    {  
+        counter += 1;
         m_accumulator -= delta_time;
-       // std::cout << m_accumulator << std::endl;
+        m_player_sprite.move(calcMovement(delta_time));     
     }
-    //std::cout << std::endl;
-    const double alpha = m_accumulator / delta_time;
-    
-    sf::Vector2f new_position(m_current_pos.x * alpha + m_previous_pos.x * (1.0 - alpha), m_current_pos.y * alpha + m_previous_pos.y * (1.0 - alpha));
-    m_playerRect.setPosition(new_position);
+    bigcounter += counter;
+    bigc += 1;
+    if(counter >= 18)
+    std::cout << counter << std::endl;
 }
+    
 
 void CPlayer::setState(bool W, bool A, bool S, bool D)
 {
@@ -56,7 +50,6 @@ void CPlayer::setState(bool W, bool A, bool S, bool D)
         else if(*(m_vecX.end() - 1) == RIGHT) {A = false; D = true;} 
     }
 
-
     if(W && !A && !S && !D) m_state = UP;
     else if(!W && !A && S && !D) m_state = DOWN;
     else if(!W && A && !S && !D) m_state = LEFT;
@@ -76,11 +69,11 @@ void CPlayer::handleVector(bool& boolIn, std::vector<State>& vecIn, State stateI
         vecIn.erase(std::find(vecIn.begin(), vecIn.end(), stateIn));
 }
 
-sf::Vector2f CPlayer::calcMovement(sf::Vector2f pos, float delta_time)
+sf::Vector2f CPlayer::calcMovement(float delta_time)
 {
     float x = 0, y = 0, vel = 600;
 
-    switch(m_state)
+     switch(m_state)
         {
             case UP: y = - vel * delta_time; break;
             case DOWN: y = vel * delta_time; break;
@@ -93,11 +86,29 @@ sf::Vector2f CPlayer::calcMovement(sf::Vector2f pos, float delta_time)
             case REST: x = 0; y = 0; break;
             default: x = 0; y = 0; break;
         }
-    pos.x += x;
-    pos.y += y;
-    return pos;
+
+    return sf::Vector2f(x, y);
 }
+
+void CPlayer::initPlayerModel()
+{   
+    int final_size = 200;
+    m_player_texture.loadFromFile("resources/player3.png");
+    m_player_texture.setSmooth(false);
+    float texture_size_x = m_player_texture.getSize().x;
+    float texture_size_y = m_player_texture.getSize().y;
+
+    float fscale = m_scale.x * (final_size/texture_size_x) < m_scale.y * (final_size/texture_size_y) ?
+                  m_scale.x * (final_size/texture_size_x) : m_scale.y * (final_size/texture_size_y);
+    
+    std::cout << fscale << std::endl;
+    m_player_sprite.setTexture(m_player_texture);
+    m_player_sprite.setOrigin(texture_size_x/2, texture_size_y);
+    m_player_sprite.setScale(fscale, fscale);
+    m_player_sprite.setPosition(300, 400);
+}
+
 void CPlayer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(m_playerRect);
+    target.draw(m_player_sprite);
 }
