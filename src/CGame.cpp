@@ -3,10 +3,10 @@
 
 CGame::CGame()
 {
-    unsigned int height = sf::VideoMode::getDesktopMode().height / 1.5;
-    unsigned int width = sf::VideoMode::getDesktopMode().width / 4;
-    float uniform_scale = (height / static_cast<float>(960)) < (width / static_cast<float>(640)) ? 
-                            (height / static_cast<float>(960)) : (width / static_cast<float>(640));
+    unsigned int height = sf::VideoMode::getDesktopMode().height / 1.2;
+    unsigned int width = sf::VideoMode::getDesktopMode().width / 3;
+    float uniform_scale = (height / static_cast<float>(1200)) < (width / static_cast<float>(853)) ? 
+                            (height / static_cast<float>(1200)) : (width / static_cast<float>(853));
     m_scale = sf::Vector2f(uniform_scale, uniform_scale);
 
     std::cout << m_scale.x << std::endl;
