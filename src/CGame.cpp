@@ -17,8 +17,7 @@ CGame::CGame()
                                                 sf::Style::Titlebar | sf::Style::Close, 
                                                 m_settings);
     m_player = std::make_unique<CPlayer>(m_scale);
-    m_window->setFramerateLimit(150);
-    m_window->setVerticalSyncEnabled(true);
+    m_window->setFramerateLimit(144);
     m_window->setKeyRepeatEnabled(false);                                            
 }
 
