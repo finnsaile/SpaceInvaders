@@ -1,10 +1,11 @@
 #include <SFML/Graphics.hpp>
-#include "Game.hpp"
+#include "Engine.hpp"
 
 int main()
 {
-    Game game;
-    game.runGame();
+    Engine app;
+
+    app.run();
     
     return 0;
 }

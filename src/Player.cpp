@@ -36,7 +36,7 @@ void Player::playerTick() {
     m_player_sprite.setPosition(temp_pos);
 }
 
-void Player::addState(const State& state) {
+void Player::addPlayerState(const PlayerState& state) {
     if(state == UP || state == DOWN) {
         m_stack_y.push_back(state);
     }
@@ -46,7 +46,7 @@ void Player::addState(const State& state) {
     }
 }
 
-void Player::removeState(const State& state) {
+void Player::removePlayerState(const PlayerState& state) {
     if(state == UP || state == DOWN) {
         m_stack_y.erase(std::find(m_stack_y.begin(), m_stack_y.end(), state));
     }
@@ -106,7 +106,7 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
     //draw bounding box
     sf::RectangleShape rect;
-    rect.setSize(Vector2f(m_player_sprite.getLocalBounds().width,  m_player_sprite.getLocalBounds().height));
+    rect.setSize(Vector2f(m_player_sprite.getGlobalBounds().width,  m_player_sprite.getGlobalBounds().height));
     rect.setOrigin(rect.getSize().x /2, rect.getSize().y /2);
     rect.setPosition(m_player_sprite.getPosition());
     rect.setFillColor(sf::Color::Green);

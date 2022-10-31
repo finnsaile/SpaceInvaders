@@ -5,94 +5,89 @@ using sf::Keyboard, sf::Event;
 using sf::VideoMode, sf::Style::Titlebar, sf::Style::Close;
 using sf::Vector2f;
 
-Game::Game() :
-m_window() {
-    unsigned int height = VideoMode::getDesktopMode().height / 1.2;
-    unsigned int width = VideoMode::getDesktopMode().width / 3;
-    float uniform_scale = (height / 1200.f) < (width / 853.f) ? 
-                            (height / 1200.f) : (width / 853.f);
-    m_scale = Vector2f(uniform_scale, uniform_scale);
-
-    m_settings.antialiasingLevel = 8;
-
-    m_window.create({width, height}, "Space Invaders", Close, m_settings);
-    m_window.setFramerateLimit(200);
-    m_window.setKeyRepeatEnabled(false);
-    
-    m_player = std::make_unique<Player>(m_scale);                                       
+Game::Game(Engine* app) : 
+State(app) {
+    m_player = std::make_unique<Player>(app->m_scale);                                       
 }
 
-void Game::runGame() {
-    while(m_window.isOpen())
+void Game::handleEvents(Engine* app) {
+    while(app->m_window.pollEvent(m_event))
     {
-        while(m_window.pollEvent(m_event))
+        switch(m_event.type)
         {
-            switch(m_event.type)
-            {
-                case Event::Closed:
-                    m_window.close();
-                    break;
-                
-                case Event::KeyPressed:
-                    switch(m_event.key.code)
-                    {
-                        case Keyboard::Escape:
-                            m_window.close();
-                            break;
+            case Event::Closed:
+                app->m_window.close();
+                break;
+            
+            case Event::KeyPressed:
+                switch(m_event.key.code)
+                {
+                    case Keyboard::Escape:
+                        app->m_window.close();
+                        break;
 
-                        case Keyboard::W:
-                            m_player->addState(UP);
-                            break;
+                    case Keyboard::W:
+                        m_player->addPlayerState(UP);
+                        break;
 
-                        case Keyboard::A:
-                            m_player->addState(LEFT);
-                            break;
+                    case Keyboard::A:
+                        m_player->addPlayerState(LEFT);
+                        break;
 
-                        case Keyboard::S:
-                            m_player->addState(DOWN);
-                            break;
+                    case Keyboard::S:
+                        m_player->addPlayerState(DOWN);
+                        break;
 
-                        case Keyboard::D:
-                            m_player->addState(RIGHT);
-                            break;
+                    case Keyboard::D:
+                        m_player->addPlayerState(RIGHT);
+                        break;
 
-                        default:
-                            break;
-                    }
-                    break;
+                    default:
+                        break;
+                }
+                break;
 
-                case Event::KeyReleased:
-                    switch(m_event.key.code)
-                    {
-                        case Keyboard::W:
-                            m_player->removeState(UP);
-                            break;
+            case Event::KeyReleased:
+                switch(m_event.key.code)
+                {
+                    case Keyboard::W:
+                        m_player->removePlayerState(UP);
+                        break;
 
-                        case Keyboard::A:
-                            m_player->removeState(LEFT);
-                            break;
+                    case Keyboard::A:
+                        m_player->removePlayerState(LEFT);
+                        break;
 
-                        case Keyboard::S:
-                            m_player->removeState(DOWN);
-                            break;
+                    case Keyboard::S:
+                        m_player->removePlayerState(DOWN);
+                        break;
 
-                        case Keyboard::D:
-                            m_player->removeState(RIGHT);
-                            break;
+                    case Keyboard::D:
+                        m_player->removePlayerState(RIGHT);
+                        break;
 
-                        default:
-                            break;
-                    }
-                    break;
+                    default:
+                        break;
+                }
+                break;
 
-                default:
-                    break;
-            }
+            default:
+                break;
         }
-
-        m_player->playerTick();
-        m_window.clear(sf::Color::Transparent);
-        m_window.draw(*m_player);
-        m_window.display();
     }
 }
+
+void Game::update(Engine* app) {
+    m_player->playerTick();
+}
+
+void Game::draw(Engine* app) {
+    app->m_window.clear(sf::Color::Transparent);
+    app->m_window.draw(*m_player);
+    app->m_window.display();
+}
+
+void Game::init() {}
+void Game::cleanup() {}
+void Game::pause() {}
+void Game::resume() {}

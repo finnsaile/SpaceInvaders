@@ -4,7 +4,7 @@
 #include <vector>
 #include <algorithm>
 
-enum State {UP, DOWN, LEFT, RIGHT};
+enum PlayerState {UP, DOWN, LEFT, RIGHT};
 
 class Player : public sf::Drawable, public sf::Transformable {
     public:
@@ -12,8 +12,8 @@ class Player : public sf::Drawable, public sf::Transformable {
         virtual ~Player();
         void playerTick();
 
-        void addState(const State&);
-        void removeState(const State&);
+        void addPlayerState(const PlayerState&);
+        void removePlayerState(const PlayerState&);
 
     private:
         //for movement calculation
@@ -28,8 +28,8 @@ class Player : public sf::Drawable, public sf::Transformable {
         sf::Vector2f& m_scale;
 
         //input handling
-        std::vector<State> m_stack_x;
-        std::vector<State> m_stack_y;
+        std::vector<PlayerState> m_stack_x;
+        std::vector<PlayerState> m_stack_y;
 
     private:
         void initPlayerModel();
