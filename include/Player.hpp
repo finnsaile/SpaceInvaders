@@ -1,32 +1,39 @@
 #pragma once 
 #include <SFML/Graphics.hpp>
-#include <math.h>
+#include <cmath>
 #include <vector>
 #include <algorithm>
 
-enum State {UP, DOWN, LEFT, RIGHT, UPRIGHT, UPLEFT, DOWNRIGHT, DOWNLEFT, REST};
+enum State {UP, DOWN, LEFT, RIGHT};
 
-class CPlayer : public sf::Drawable, public sf::Transformable
-{
+class Player : public sf::Drawable, public sf::Transformable {
     public:
-        CPlayer(sf::Vector2f& scaleVec);
-        virtual ~CPlayer();
+        Player(sf::Vector2f& scaleVec);
+        virtual ~Player();
         void playerTick();
-        void setState(bool W, bool A, bool S, bool D);
+
+        void addState(const State&);
+        void removeState(const State&);
 
     private:
-        double m_accumulator = 0;
-        State m_state = REST;
+        //for movement calculation
+        float m_accumulator = 0;
+        sf::Vector2f m_current_pos;
+        sf::Vector2f m_previous_pos;
+        sf::Clock m_clock;
+
+        //player model
         sf::Sprite m_player_sprite;
         sf::Texture m_player_texture;
-        sf::Clock m_clock;
         sf::Vector2f& m_scale;
+
+        //input handling
         std::vector<State> m_stack_x;
         std::vector<State> m_stack_y;
 
+    private:
         void initPlayerModel();
         sf::Vector2f calcMovement(float delta_time);   
-        void handleStateStack(bool& boolIn, std::vector<State>& vecIn, State stateIn);
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 

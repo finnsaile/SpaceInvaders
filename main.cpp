@@ -1,9 +1,9 @@
 #include <SFML/Graphics.hpp>
-#include "../headers/CGame.h"
+#include "Game.hpp"
 
 int main()
 {
-    CGame game;
+    Game game;
     game.runGame();
     
     return 0;
