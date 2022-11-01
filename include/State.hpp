@@ -14,11 +14,11 @@ public:
     virtual void pause() = 0;
     virtual void resume() = 0;
 
-    virtual void handleEvents(Engine* app) = 0;
-    virtual void update(Engine* app) = 0;
-    virtual void draw(Engine* app) = 0;
+    virtual void handleEvents() = 0;
+    virtual void update() = 0;
+    virtual void draw() = 0;
 
-    void changeState(Engine* app, std::unique_ptr<State> state);
+    void changeState(std::unique_ptr<State> state);
 
     Engine* m_app;
 };

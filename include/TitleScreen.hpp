@@ -1,15 +1,14 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
-#include <memory>
 
-#include "Player.hpp"
 #include "State.hpp"
-#include "Engine.hpp"
 
-
-class Game : public State {
+class TitleScreen : public State {
 public:
-    //inherited functions
+
+    TitleScreen(Engine* app);
+public:
     virtual void init();
     virtual void cleanup();
 
@@ -19,10 +18,8 @@ public:
     virtual void handleEvents();
     virtual void update();
     virtual void draw();
-    
-public:
-    Game(Engine* app);
 
 private:
-    std::unique_ptr<Player> m_player;
+    sf::Text m_title_text;
+    sf::Font m_font;
 };

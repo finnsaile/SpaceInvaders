@@ -1,29 +1,34 @@
 #include <iostream>
 #include "Game.hpp"
+#include "TitleScreen.hpp"
 
 using sf::Keyboard, sf::Event;
-using sf::VideoMode, sf::Style::Titlebar, sf::Style::Close;
 using sf::Vector2f;
 
 Game::Game(Engine* app) : 
 State(app) {
-    m_player = std::make_unique<Player>(app->m_scale);                                       
+    m_player = std::make_unique<Player>(m_app->m_scale);                                       
 }
 
-void Game::handleEvents(Engine* app) {
-    while(app->m_window.pollEvent(m_event))
+void Game::handleEvents() {
+    sf::Event event;
+    while(m_app->m_window.pollEvent(event))
     {
-        switch(m_event.type)
+        switch(event.type)
         {
             case Event::Closed:
-                app->m_window.close();
+                m_app->m_window.close();
                 break;
             
             case Event::KeyPressed:
-                switch(m_event.key.code)
+                switch(event.key.code)
                 {
                     case Keyboard::Escape:
-                        app->m_window.close();
+                        m_app->m_window.close();
+                        break;
+
+                    case Keyboard::L:
+                        changeState(std::make_unique<TitleScreen>(m_app));
                         break;
 
                     case Keyboard::W:
@@ -48,7 +53,7 @@ void Game::handleEvents(Engine* app) {
                 break;
 
             case Event::KeyReleased:
-                switch(m_event.key.code)
+                switch(event.key.code)
                 {
                     case Keyboard::W:
                         m_player->removePlayerState(UP);
@@ -77,14 +82,12 @@ void Game::handleEvents(Engine* app) {
     }
 }
 
-void Game::update(Engine* app) {
+void Game::update() {
     m_player->playerTick();
 }
 
-void Game::draw(Engine* app) {
-    app->m_window.clear(sf::Color::Transparent);
-    app->m_window.draw(*m_player);
-    app->m_window.display();
+void Game::draw() {
+    m_app->m_window.draw(*m_player);
 }
 
 void Game::init() {}

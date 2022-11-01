@@ -37,22 +37,32 @@ void Player::playerTick() {
 }
 
 void Player::addPlayerState(const PlayerState& state) {
+    //check if state already in stack, and add if not
     if(state == UP || state == DOWN) {
-        m_stack_y.push_back(state);
+        auto i = std::find(m_stack_y.begin(), m_stack_y.end(), state);
+        if(i == m_stack_y.end())
+            m_stack_y.push_back(state);
     }
 
     if(state == LEFT || state == RIGHT) {
-        m_stack_x.push_back(state);
+        auto i = std::find(m_stack_x.begin(), m_stack_x.end(), state);
+        if(i == m_stack_x.end())
+            m_stack_x.push_back(state);
     }
 }
 
 void Player::removePlayerState(const PlayerState& state) {
+    //check if state already in stack, and remove if present
     if(state == UP || state == DOWN) {
-        m_stack_y.erase(std::find(m_stack_y.begin(), m_stack_y.end(), state));
+        auto i = std::find(m_stack_y.begin(), m_stack_y.end(), state);
+        if(i != m_stack_y.end())
+            m_stack_y.erase(i);
     }
 
     if(state == LEFT || state == RIGHT) {
-        m_stack_x.erase(std::find(m_stack_x.begin(), m_stack_x.end(), state));
+        auto i = std::find(m_stack_x.begin(), m_stack_x.end(), state);
+        if(i != m_stack_x.end())
+            m_stack_x.erase(i);
     }
 }
 
