@@ -1,39 +1,21 @@
 #include <iostream>
 #include <exception>
+#include <algorithm>
+#include <cmath>
 #include "Player.hpp"
 
 using sf::Vector2f;
 
-Player::Player(Vector2f& scaleVec) : 
-m_scale(scaleVec)
-{
+Player::Player(const Vector2f& scaleVec) :
+DynamicGameEntity({300, 400}, 600, scaleVec) {
     initPlayerModel();
 }
 
 Player::~Player()
-{
+{}
 
-}
-
-void Player::playerTick() {
-    float frame_time = m_clock.restart().asSeconds(), delta_time = 0.01;
-
-    m_accumulator += frame_time;
-
-    if(m_accumulator > 0.1) {
-        m_accumulator = 0.1;
-    }
-
-    while(m_accumulator >= delta_time) {
-        m_previous_pos = m_current_pos;
-        m_current_pos += calcMovement(delta_time);
-        m_accumulator -= delta_time;
-    }
-
-    const float alpha = m_accumulator / delta_time;
-    
-    Vector2f temp_pos = (alpha * m_current_pos) + m_previous_pos * (1.f - alpha);
-    m_player_sprite.setPosition(temp_pos);
+void Player::update(float frame_time, float delta_time) {
+    m_player_sprite.setPosition(calcNextPos(frame_time, delta_time));
 }
 
 void Player::addPlayerState(const PlayerState& state) {
@@ -66,9 +48,9 @@ void Player::removePlayerState(const PlayerState& state) {
     }
 }
 
-Vector2f Player::calcMovement(const float delta_time) {
-    float x = 0, y = 0, vel = 600;
-    float move_const = vel * delta_time;
+Vector2f Player::calcMovementStep(const float delta_time) {
+    float x = 0, y = 0;
+    float move_const = m_velocity * delta_time;
 
     if(!m_stack_y.empty())
         switch(m_stack_y.back()) {
@@ -121,7 +103,6 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     rect.setPosition(m_player_sprite.getPosition());
     rect.setFillColor(sf::Color::Green);
     target.draw(rect);
-
 
     target.draw(m_player_sprite);
 }

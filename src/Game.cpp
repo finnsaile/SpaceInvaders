@@ -83,7 +83,8 @@ void Game::handleEvents() {
 }
 
 void Game::update() {
-    m_player->playerTick();
+    float frame_time = m_clock.restart().asSeconds(), delta_time = 0.01;
+    m_player->update(frame_time, delta_time);
 }
 
 void Game::draw() {

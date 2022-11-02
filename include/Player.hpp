@@ -1,39 +1,33 @@
 #pragma once 
 #include <SFML/Graphics.hpp>
-#include <cmath>
 #include <vector>
-#include <algorithm>
+
+#include "GameEntity.hpp"
+
 
 enum PlayerState {UP, DOWN, LEFT, RIGHT};
 
-class Player : public sf::Drawable, public sf::Transformable {
-    public:
-        Player(sf::Vector2f& scaleVec);
-        virtual ~Player();
-        void playerTick();
+class Player : public DynamicGameEntity {
+public:
+    Player(const sf::Vector2f& scaleVec);
+    virtual ~Player();
+    virtual void update(float frame_time, float delta_time);
 
-        void addPlayerState(const PlayerState&);
-        void removePlayerState(const PlayerState&);
+    void addPlayerState(const PlayerState&);
+    void removePlayerState(const PlayerState&);
 
-    private:
-        //for movement calculation
-        float m_accumulator = 0;
-        sf::Vector2f m_current_pos;
-        sf::Vector2f m_previous_pos;
-        sf::Clock m_clock;
+private:
+    //player model
+    sf::Sprite m_player_sprite;
+    sf::Texture m_player_texture;
 
-        //player model
-        sf::Sprite m_player_sprite;
-        sf::Texture m_player_texture;
-        sf::Vector2f& m_scale;
+    //input handling
+    std::vector<PlayerState> m_stack_x;
+    std::vector<PlayerState> m_stack_y;
 
-        //input handling
-        std::vector<PlayerState> m_stack_x;
-        std::vector<PlayerState> m_stack_y;
-
-    private:
-        void initPlayerModel();
-        sf::Vector2f calcMovement(float delta_time);   
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+private:
+    void initPlayerModel();
+    sf::Vector2f calcMovementStep(const float delta_time);   
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 

@@ -25,4 +25,5 @@ public:
 
 private:
     std::unique_ptr<Player> m_player;
+    sf::Clock m_clock;
 };
