@@ -10,7 +10,7 @@ State(app),
 fire_bullet{false} {
     sf::Vector2u win_size = m_app->m_window.getSize();
     m_player = std::make_unique<Player>(sf::Vector2f(win_size.x/2.f, win_size.y/2.f),
-                                         600, m_app->m_scale);                         
+                                         800, m_app->m_scale);                         
 }
 
 void Game::handleEvents() {
@@ -107,8 +107,8 @@ void Game::update() {
 
     if(fire_bullet) {
         auto canon_pos = m_player->getCanonPositions();
-        std::unique_ptr<Bullet> bullet_l = m_player->m_fire_bullet_left(canon_pos.first, 1200, m_app->m_scale);
-        std::unique_ptr<Bullet> bullet_r = m_player->m_fire_bullet_right(canon_pos.second, 1200, m_app->m_scale);
+        std::unique_ptr<Bullet> bullet_l = m_player->m_fire_bullet_left(canon_pos.first, 1000, m_app->m_scale);
+        std::unique_ptr<Bullet> bullet_r = m_player->m_fire_bullet_right(canon_pos.second, 1000, m_app->m_scale);
         if(bullet_l)
             m_bullets.push_back(std::move(bullet_l));
         if(bullet_r)

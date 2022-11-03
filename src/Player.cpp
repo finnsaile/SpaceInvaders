@@ -8,8 +8,8 @@ using sf::Vector2f;
 
 Player::Player(sf::Vector2f pos, float vel, const Vector2f& scaleVec) :
 DynamicGameEntity(pos, vel, scaleVec),
-m_fire_bullet_left{0.1},
-m_fire_bullet_right{0.1} {
+m_fire_bullet_left{0.2},
+m_fire_bullet_right{0.2} {
     initPlayerModel();
 }
 
@@ -79,9 +79,18 @@ Vector2f Player::calcMovementStep(const float delta_time) {
     return {x, y};
 }
 
+sf::Vector2f Player::getDisplayedPos() {
+    return m_player_sprite.getPosition();
+}
+
+sf::FloatRect Player::getGlobalBounds() {
+    return m_player_sprite.getGlobalBounds();
+}
+
 std::pair<sf::Vector2f, sf::Vector2f> Player::getCanonPositions() {
-    sf::Vector2f left(m_current_pos);
-    sf::Vector2f right(m_current_pos);
+    sf::Vector2f pos = getDisplayedPos();
+    sf::Vector2f left(pos);
+    sf::Vector2f right(pos);
 
     //fraction by which the canons are ofset from the center of the sprite
     constexpr float X_FRAC_FROM_CENTER = 1.f/5.f;

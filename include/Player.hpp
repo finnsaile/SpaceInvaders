@@ -18,7 +18,8 @@ public:
     void removePlayerState(const PlayerState&);
 
     std::pair<sf::Vector2f, sf::Vector2f> getCanonPositions();
-
+    virtual sf::Vector2f getDisplayedPos();
+    virtual sf::FloatRect getGlobalBounds();
 public:
     FireBullet m_fire_bullet_left;
     FireBullet m_fire_bullet_right;

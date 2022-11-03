@@ -20,12 +20,14 @@ void Bullet::initBulletModel() {
     m_bullet_texture.setSmooth(true);
 
     m_bullet_sprite = initSprite(m_current_pos, 60, m_bullet_texture);
-
-    std::cout << m_bullet_sprite.getGlobalBounds().width << std::endl;
 }
 
 sf::FloatRect Bullet::getGlobalBounds() {
     return m_bullet_sprite.getGlobalBounds();
+}
+
+sf::Vector2f Bullet::getDisplayedPos() {
+    return m_bullet_sprite.getPosition();
 }
 
 void Bullet::draw(sf::RenderTarget& target, sf::RenderStates states) const {

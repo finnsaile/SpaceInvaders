@@ -16,6 +16,8 @@ public:
     virtual ~DynamicGameEntity() = 0;
     virtual sf::Vector2f calcNextPos(float frame_time, float delta_time);
 
+    virtual sf::Vector2f getDisplayedPos() = 0;
+    virtual sf::FloatRect getGlobalBounds() = 0;
     sf::Vector2f getPos();
     float getVel();
     

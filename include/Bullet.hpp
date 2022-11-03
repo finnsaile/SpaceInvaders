@@ -8,7 +8,8 @@ public:
     virtual ~Bullet();
     virtual void update(float frame_time, float delta_time);
 
-    sf::FloatRect getGlobalBounds();
+    virtual sf::FloatRect getGlobalBounds();
+    virtual sf::Vector2f getDisplayedPos();
 private:
     void initBulletModel();
     virtual sf::Vector2f calcMovementStep(const float delta_time);
