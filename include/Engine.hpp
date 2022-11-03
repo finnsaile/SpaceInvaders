@@ -30,7 +30,7 @@ public:
     void run();
 public:
     sf::RenderWindow m_window;
-    const sf::Vector2f m_scale;
+    sf::Vector2f m_scale;
     
 private:
     std::vector<StatePair> m_states;

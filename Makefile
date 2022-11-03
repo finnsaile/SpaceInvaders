@@ -1,6 +1,6 @@
 CXX       := /usr/bin/g++
 CXX_FLAGS := -std=c++17 -fdiagnostics-color=always -Wall
-DEBUG_FLAGS := -fsanitize=address
+DEBUG_FLAGS := -g -fsanitize=address
 RELEASE_FLAGS := -Ofast
 LIBRARIES := -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio 
 

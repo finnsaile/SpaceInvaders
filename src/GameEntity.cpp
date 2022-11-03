@@ -1,5 +1,5 @@
 #include "GameEntity.hpp"
-
+#include <iostream>
 using sf::Vector2f;
 
 GameEntity::GameEntity(const Vector2f& scale) : 
@@ -9,7 +9,7 @@ GameEntity::~GameEntity() {}
 
 DynamicGameEntity::DynamicGameEntity(Vector2f pos, float vel, const Vector2f& scale) :
 GameEntity(scale),
-m_velocity{vel},
+m_velocity{vel * scale.x},
 m_accumulator{0},
 m_current_pos{pos},
 m_previous_pos{pos} {}
@@ -33,4 +33,30 @@ Vector2f DynamicGameEntity::calcNextPos(float frame_time, float delta_time) {
     
     Vector2f temp_pos = (alpha * m_current_pos) + m_previous_pos * (1.f - alpha);
     return temp_pos;
+}
+
+sf::Sprite DynamicGameEntity::initSprite(sf::Vector2f pos, const float final_width, sf::Texture& texture) {
+    sf::Sprite temp_sprite;
+
+    texture.setSmooth(true);
+
+    Vector2f texture_size(texture.getSize());
+
+    float fscale = m_scale.x * (final_width/texture_size.x);
+
+
+    temp_sprite.setTexture(texture);
+    temp_sprite.setOrigin(texture_size.x/2, texture_size.y/2);
+    temp_sprite.setScale(fscale, fscale);
+    temp_sprite.setPosition(pos);
+
+    return temp_sprite;
+}
+
+sf::Vector2f DynamicGameEntity::getPos() {
+    return m_current_pos;
+}
+
+float DynamicGameEntity::getVel() {
+    return m_velocity;
 }
