@@ -16,6 +16,7 @@ public:
 
     void addPlayerState(const PlayerState&);
     void removePlayerState(const PlayerState&);
+    void resetPlayerState();
 
     std::pair<sf::Vector2f, sf::Vector2f> getCanonPositions();
     virtual sf::Vector2f getDisplayedPos();

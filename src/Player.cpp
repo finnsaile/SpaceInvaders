@@ -50,6 +50,11 @@ void Player::removePlayerState(const PlayerState& state) {
     }
 }
 
+void Player::resetPlayerState() {
+    m_stack_x.clear();
+    m_stack_y.clear();
+}
+
 Vector2f Player::calcMovementStep(const float delta_time) {
     float x = 0, y = 0;
     float move_const = m_velocity * delta_time;
