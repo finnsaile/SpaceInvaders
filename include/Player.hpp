@@ -24,6 +24,8 @@ public:
 public:
     FireBullet m_fire_bullet_left;
     FireBullet m_fire_bullet_right;
+
+    FireBullet m_fire_bomb;
 private:
     void initPlayerModel();
     virtual sf::Vector2f calcMovementStep(const float delta_time);   

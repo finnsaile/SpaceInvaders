@@ -17,9 +17,11 @@ protected:
 
 class FireBullet : public Ability {
 public:
-    FireBullet(float cooldown);
+    FireBullet(float cooldown, const std::string& texture_path = "");
     virtual ~FireBullet();
-    std::unique_ptr<Bullet> useAbility(sf::Vector2f pos, float vel, sf::Vector2f scale);
+    virtual std::unique_ptr<Bullet> useAbility(sf::Vector2f pos, float vel, sf::Vector2f scale);
     std::unique_ptr<Bullet> operator()(sf::Vector2f pos, float vel, sf::Vector2f scale);
     virtual void updateAbility();
+private:
+    std::string m_texture_path;
 };

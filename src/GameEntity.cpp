@@ -1,6 +1,8 @@
 #include "GameEntity.hpp"
 #include <iostream>
+
 using sf::Vector2f;
+using sf::Sprite, sf::Texture;
 
 GameEntity::GameEntity(const Vector2f& scale) : 
 m_scale{scale} {}
@@ -35,8 +37,8 @@ Vector2f DynamicGameEntity::calcNextPos(float frame_time, float delta_time) {
     return temp_pos;
 }
 
-sf::Sprite DynamicGameEntity::initSprite(sf::Vector2f pos, const float final_width, sf::Texture& texture) {
-    sf::Sprite temp_sprite;
+Sprite GameEntity::initSprite(Vector2f pos, const float final_width, Texture& texture) {
+    Sprite temp_sprite;
 
     texture.setSmooth(true);
 
@@ -53,10 +55,20 @@ sf::Sprite DynamicGameEntity::initSprite(sf::Vector2f pos, const float final_wid
     return temp_sprite;
 }
 
-sf::Vector2f DynamicGameEntity::getPos() {
+Vector2f DynamicGameEntity::getPos() {
     return m_current_pos;
 }
 
 float DynamicGameEntity::getVel() {
     return m_velocity;
+}
+
+StaticGameEntity::StaticGameEntity(Vector2f pos, const Vector2f& scale) :
+GameEntity(scale),
+m_pos{pos} {}
+
+StaticGameEntity::~StaticGameEntity() {}
+
+Vector2f StaticGameEntity::getPos() {
+    return m_pos;
 }

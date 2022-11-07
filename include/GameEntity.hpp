@@ -7,6 +7,7 @@ public:
     virtual ~GameEntity() = 0;
 
 protected:
+    sf::Sprite initSprite(sf::Vector2f pos, const float final_width, sf::Texture& texture);
     const sf::Vector2f& m_scale;
 };
 
@@ -30,5 +31,18 @@ protected:
 
 protected: 
     virtual sf::Vector2f calcMovementStep(float delta_time) = 0;
+};
+
+class StaticGameEntity : public GameEntity {
+public: 
+    StaticGameEntity(sf::Vector2f pos, const sf::Vector2f& scale);
+    virtual ~StaticGameEntity() = 0;
+    virtual sf::FloatRect getGlobalBounds() = 0;
+
+    sf::Vector2f getPos();
+protected:
+    sf::Vector2f m_pos;
+
+protected:
     sf::Sprite initSprite(sf::Vector2f pos, const float final_width, sf::Texture& texture);
 };

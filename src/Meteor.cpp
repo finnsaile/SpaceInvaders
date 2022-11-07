@@ -15,8 +15,9 @@ void Meteor::clearMeteorTextures() {
     }
 }
 
-Meteor::Meteor(sf::Vector2f pos, float vel, const sf::Vector2f& scaleVec) :
-DynamicGameEntity(pos, vel, scaleVec) {
+Meteor::Meteor(size_t hp, sf::Vector2f pos, float vel, const sf::Vector2f& scaleVec) :
+DynamicGameEntity(pos, vel, scaleVec),
+m_hp{hp} {
     if(m_meteor_counter == 0) {
         std::vector<std::string> files;
         //find all meteor textures and load them into memory
@@ -58,6 +59,15 @@ void Meteor::initMeteorModel() {
 sf::Vector2f Meteor::calcMovementStep(const float delta_time) {
     return {0, m_velocity * delta_time};
 }
+
+size_t Meteor::getHp() {
+    return m_hp;
+}
+
+void Meteor::setHp(size_t hp) {
+    m_hp = hp;
+}
+
 void Meteor::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(m_meteor_sprite);
 }

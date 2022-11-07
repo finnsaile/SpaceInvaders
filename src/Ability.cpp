@@ -6,8 +6,9 @@ m_usable{true} {}
 
 Ability::~Ability() {}
 
-FireBullet::FireBullet(float cooldown) :
-Ability(cooldown) {}
+FireBullet::FireBullet(float cooldown, const std::string& texture_path) :
+Ability(cooldown),
+m_texture_path{texture_path} {}
 
 FireBullet::~FireBullet() {}
 
@@ -20,7 +21,7 @@ std::unique_ptr<Bullet> FireBullet::useAbility(sf::Vector2f pos, float vel, sf::
     m_ability_timer.restart();
     m_usable = false;
 
-    return std::make_unique<Bullet>(pos, vel, scale);
+    return std::make_unique<Bullet>(pos, vel, scale, m_texture_path);
 }
 
 std::unique_ptr<Bullet> FireBullet::operator()(sf::Vector2f pos, float vel, sf::Vector2f scale) {

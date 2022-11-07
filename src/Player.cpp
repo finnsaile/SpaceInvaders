@@ -9,7 +9,8 @@ using sf::Vector2f;
 Player::Player(sf::Vector2f pos, float vel, const Vector2f& scaleVec) :
 DynamicGameEntity(pos, vel, scaleVec),
 m_fire_bullet_left{0.2},
-m_fire_bullet_right{0.2} {
+m_fire_bullet_right{0.2},
+m_fire_bomb{0.5, "resources/Bullet_Bomb.png"} {
     initPlayerModel();
 }
 

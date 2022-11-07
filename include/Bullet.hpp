@@ -4,14 +4,14 @@
 
 class Bullet : public DynamicGameEntity {
 public:
-    Bullet(sf::Vector2f pos, float vel, const sf::Vector2f& scaleVec);
+    Bullet(sf::Vector2f pos, float vel, const sf::Vector2f& scaleVec, const std::string& model = "");
     virtual ~Bullet();
     virtual void update(float frame_time, float delta_time);
 
     virtual sf::FloatRect getGlobalBounds();
     virtual sf::Vector2f getDisplayedPos();
 private:
-    void initBulletModel();
+    void initBulletModel(const std::string& model);
     virtual sf::Vector2f calcMovementStep(const float delta_time);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const; 
 private:

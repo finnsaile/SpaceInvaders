@@ -7,6 +7,7 @@
 #include "Engine.hpp"
 #include "Bullet.hpp"
 #include "Meteor.hpp"
+#include "Background.hpp"
 
 
 class Game : public State {
@@ -27,14 +28,16 @@ public:
     virtual ~Game();
 private:
     std::vector<std::unique_ptr<Bullet>> m_bullets;
+    std::vector<std::unique_ptr<Bullet>> m_bombs;
     std::vector<std::unique_ptr<Meteor>> m_meteors;
     std::unique_ptr<Player> m_player;
     sf::Clock m_clock;
     float m_meteor_timer;
-
+    Background m_background;
+    
 private:
     bool fire_bullet;
-
+    bool fire_bomb;
 private:
     void spawnMeteor(float frame_time);
 };

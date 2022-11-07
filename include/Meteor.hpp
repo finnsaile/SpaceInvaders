@@ -4,13 +4,15 @@
 
 class Meteor : public DynamicGameEntity {
 public:
-    Meteor(sf::Vector2f pos, float vel, const sf::Vector2f& scaleVec);
+    Meteor(size_t hp, sf::Vector2f pos, float vel, const sf::Vector2f& scaleVec);
     virtual ~Meteor();
     virtual void update(float frame_time, float delta_time);
 
     virtual sf::FloatRect getGlobalBounds();
     virtual sf::Vector2f getDisplayedPos();
 
+    size_t getHp();
+    void setHp(size_t hp);
     static void clearMeteorTextures();
 private:
     void initMeteorModel();
@@ -19,6 +21,7 @@ private:
 private:
     sf::Sprite m_meteor_sprite;
     sf::Texture m_meteor_texture;
+    size_t m_hp;
 
     static std::vector<sf::Texture> m_meteor_textures;
     static size_t m_meteor_counter;
