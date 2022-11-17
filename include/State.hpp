@@ -4,8 +4,17 @@
 
 class Engine;
 
+/**
+ * @brief Represents a game state used by the engine.
+ * 
+ */
 class State {
 public:
+    /**
+     * @brief Construct a new State object.
+     * 
+     * @param app engine which the state belongs to
+     */
     State(Engine* app);
     virtual ~State();
     virtual void init() = 0;
@@ -18,7 +27,14 @@ public:
     virtual void update() = 0;
     virtual void draw() = 0;
 
+    /**
+     * @brief Call the change state function of the engine given a new state.
+     * This will mark this state for deletion.
+     * 
+     * @param state new state
+     */
     void changeState(std::unique_ptr<State> state);
 
-    Engine* m_app;
+    // pointer to owning engine
+    Engine* const m_app;
 };

@@ -37,7 +37,6 @@ void Engine::init() {
     m_window.setKeyRepeatEnabled(false);
 }
 
-//main window loop
 void Engine::run() {
     while(m_window.isOpen()) {
         handleEvents();
@@ -46,19 +45,16 @@ void Engine::run() {
     }
 }
 
-//pops one state and adds another, essentially swaping the two
 void Engine::changeState(unique_ptr<State> state) {
     popState();
 
     pushState(std::move(state));
 }
 
-//adds new state to stack
 void Engine::pushState(unique_ptr<State> state) {
     m_states.push_back({std::move(state), false});
 }
 
-//marks the most current active state for deletion
 void Engine::popState() {
     for (std::vector<StatePair>::reverse_iterator i = m_states.rbegin(); 
         i != m_states.rend(); ++i ) {
@@ -69,8 +65,6 @@ void Engine::popState() {
     }
 }
 
-//call the currently active state function and 
-//afterwards remove all states marked for deletion
 void Engine::handleEvents() {
     if(m_states.empty())
         throw(std::runtime_error("No states in engine stack when trying to handle events!"));
@@ -88,7 +82,6 @@ void Engine::update() {
     m_states.back().state->update();
 }
 
-//draws all states in the stack
 void Engine::draw() {
     m_window.clear(sf::Color::Transparent);
     for(auto& s : m_states)

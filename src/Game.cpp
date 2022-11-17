@@ -10,7 +10,8 @@ Game::Game(Engine* app) :
 State(app),
 m_meteor_timer{0},
 m_background({0,0}, app->m_scale, app->m_window.getSize(), "resources/bg57.png"),
-fire_bullet{false} {
+m_fire_bullet{false},
+m_fire_bomb{false} {
     sf::Vector2u win_size = m_app->m_window.getSize();
     m_player = std::make_unique<Player>(sf::Vector2f(win_size.x/2.f, win_size.y/2.f),
                                          800, m_app->m_scale);                         
@@ -50,11 +51,11 @@ void Game::handleEvents() {
                         break;
 
                     case Keyboard::Space:
-                        fire_bullet = true;
+                        m_fire_bullet = true;
                         break;
 
                     case Keyboard::Q:
-                        fire_bomb = true;
+                        m_fire_bomb = true;
                         break;
 
                     case Keyboard::M:
@@ -86,11 +87,11 @@ void Game::handleEvents() {
                 switch(event.key.code)
                 {
                     case Keyboard::Space:
-                        fire_bullet = false;
+                        m_fire_bullet = false;
                         break;
                     
                     case Keyboard::Q:
-                        fire_bomb = false;
+                        m_fire_bomb = false;
                         break;
 
                     case Keyboard::W:
@@ -125,7 +126,7 @@ void Game::update() {
     m_player->update(frame_time, delta_time);
 
     //create left and right bullet
-    if(fire_bullet) {
+    if(m_fire_bullet) {
         auto canon_pos = m_player->getCanonPositions();
         std::unique_ptr<Bullet> bullet_l = m_player->m_fire_bullet_left(canon_pos.first, 1000, m_app->m_scale);
         std::unique_ptr<Bullet> bullet_r = m_player->m_fire_bullet_right(canon_pos.second, 1000, m_app->m_scale);
@@ -135,7 +136,7 @@ void Game::update() {
             m_bullets.push_back(std::move(bullet_r));
     }
 
-    if(fire_bomb) {
+    if(m_fire_bomb) {
         sf::Vector2f sc = {m_app->m_scale.x * 1.5f, m_app->m_scale.y * 1.5f};
         std::unique_ptr<Bullet> bomb = m_player->m_fire_bomb(m_player->getDisplayedPos(), 1200, sc);
         if(bomb)
